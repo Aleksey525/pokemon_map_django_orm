@@ -3,6 +3,7 @@ import json
 
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
+from pokemon_entities.models import Pokemon
 
 
 MOSCOW_CENTER = [55.751244, 37.618423]
@@ -40,11 +41,13 @@ def show_all_pokemons(request):
             )
 
     pokemons_on_page = []
-    for pokemon in pokemons:
+    pokemons = Pokemon.objects.all()
+    for pok in pokemons:
+        photo_pok = request.build_absolute_uri(f'/media/{pok.photo}')
         pokemons_on_page.append({
-            'pokemon_id': pokemon['pokemon_id'],
-            'img_url': pokemon['img_url'],
-            'title_ru': pokemon['title_ru'],
+            'pokemon_id': pok.id,
+            'img_url': photo_pok,
+            'title_ru': pok.title,
         })
 
     return render(request, 'mainpage.html', context={
