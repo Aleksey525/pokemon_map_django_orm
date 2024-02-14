@@ -34,7 +34,7 @@ def show_all_pokemons(request):
     entities = PokemonEntity.objects.filter(disappeared_at__gt=time_now, appeared_at__lt=time_now)
 
     for entity in entities:
-        entity_photo = request.build_absolute_uri(f'/media/{entity.Pokemon.photo}')
+        entity_photo = request.build_absolute_uri(f'/media/{entity.pokemon.photo}')
         add_pokemon(
             folium_map,
             entity.lat,
@@ -52,7 +52,6 @@ def show_all_pokemons(request):
             'title_ru': pok.title,
         })
 
-
     return render(request, 'mainpage.html', context={
         'map': folium_map._repr_html_(),
         'pokemons': pokemons_on_page,
@@ -60,12 +59,12 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
-    pokemon = Pokemon.objects.get(id=int(pokemon_id))
-    entities = PokemonEntity.objects.filter(Pokemon__title=pokemon)
+    pokemon_name = Pokemon.objects.get(id=int(pokemon_id))
+    entities = PokemonEntity.objects.filter(pokemon__title=pokemon_name)
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
     for entity in entities:
-        entity_photo = request.build_absolute_uri(f'/media/{pokemon.photo}')
+        entity_photo = request.build_absolute_uri(f'/media/{pokemon_name.photo}')
         add_pokemon(
             folium_map,
             entity.lat,
@@ -73,10 +72,13 @@ def show_pokemon(request, pokemon_id):
             entity_photo
         )
 
-    pokemon_info = {
-        'pokemon_id': pokemon.id,
+    pokemon = {
+        'pokemon_id': pokemon_name.id,
         'img_url': entity_photo,
-        'title_ru': pokemon.title,
+        'title_ru': pokemon_name.title,
+        'title_en': 'english',
+        'title_jp': 'jap',
+        'description': pokemon_name.description
     }
 
 
