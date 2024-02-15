@@ -7,6 +7,7 @@ class Pokemon(models.Model):
     title_jp = models.CharField(max_length=200)
     photo = models.ImageField(null=True, blank=True)
     description = models.TextField()
+    previous_evolution = models.ForeignKey('Pokemon', null=True, blank=True, on_delete=models.CASCADE)
 
 
     def __str__(self):
