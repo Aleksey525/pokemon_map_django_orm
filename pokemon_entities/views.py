@@ -84,20 +84,28 @@ def show_pokemon(request, pokemon_id):
     if pokemon_name.previous_evolution:
         previous_evolution = {
             "title_ru": pokemon_name.previous_evolution.title,
-            "pokemon_id": pokemon_name.previous_evolution.id ,
+            "pokemon_id": pokemon_name.previous_evolution.id,
             "img_url": request.build_absolute_uri(f'/media/{pokemon_name.previous_evolution.photo}'),
             "previous_evolution": pokemon_name.previous_evolution
-    }
+        }
 
     else:
         previous_evolution = {}
 
-    # previous_evolution.previous_evolution.pokemon_id
+    pokemon_get = Pokemon.objects.get(id=pokemon_id)
+    child = pokemon_get.pokemon_set.all().first()
+
+    if child:
+        next_evolution = {
+            'title_ru': child.title,
+            "pokemon_id": child.id,
+            "img_url": request.build_absolute_uri(f'/media/{child.photo}'),
+            "next_evolution": child
+        }
+    else:
+        next_evolution = {}
 
     return render(request, 'pokemon.html', context={
-        'map': folium_map._repr_html_(), 'pokemon': pokemon, 'previous_evolution': previous_evolution
+        'map': folium_map._repr_html_(), 'pokemon': pokemon, 'previous_evolution': previous_evolution,
+        'next_evolution': next_evolution
     })
-
-
- # else:
-    #     return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
