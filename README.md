@@ -24,11 +24,37 @@
 pip install -r requirements.txt
 ```
 
+Создайте миграцию
+
+```sh
+python manage.py makemigrations
+```
+
+Запустите миграцию в базе данных
+
+```sh
+python manage.py migrate
+```
+
+Создайте суперпользователя
+
+```sh
+python manage.py createsuperuser
+```
+
 Запустите разработческий сервер
 
 ```sh
-python3 manage.py runserver
+python manage.py runserver
 ```
+
+Перейдите по ссылке
+
+```sh
+127.0.0.1:8000/admin
+```
+
+Возьмите информацию о покемонах на [Wiki](https://pokemon.fandom.com/ru/) и заполните базу данных.
 
 ### Переменные окружения
 
