@@ -91,7 +91,7 @@ def show_pokemon(request, pokemon_id):
         previous_evolution = {}
 
     pokemon_get = Pokemon.objects.get(id=pokemon_id)
-    child = pokemon_get.pokemon_set.all().first()
+    child = pokemon_get.evolution.all().first()
 
     if child:
         next_evolution = {
