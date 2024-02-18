@@ -13,8 +13,6 @@ class Pokemon(models.Model):
 
 
     def __str__(self):
-        if self.title:
-            return self.title
         return f'{self.title}'
 
 
