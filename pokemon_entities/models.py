@@ -5,9 +5,9 @@ class Pokemon(models.Model):
     title = models.CharField(verbose_name='Название', max_length=200)
     title_en = models.CharField(verbose_name='Название на английском', max_length=200, blank=True)
     title_jp = models.CharField(verbose_name='Название на японском', max_length=200, blank=True)
-    photo = models.ImageField(verbose_name='Фото', null=True, blank=True, upload_to='media')
+    photo = models.ImageField(verbose_name='Фото', null=True, blank=True)
     description = models.TextField(verbose_name='Описание')
-    previous_evolution = models.ForeignKey('Pokemon', related_name='evolution', verbose_name='Предок',
+    previous_evolution = models.ForeignKey('Pokemon', related_name='next_evolution', verbose_name='Предок',
         null=True, blank=True, on_delete=models.CASCADE
     )
 
@@ -17,7 +17,7 @@ class Pokemon(models.Model):
 
 
 class PokemonEntity(models.Model):
-    pokemon = models.ForeignKey(Pokemon, verbose_name='Покемон', related_name='exemplar', on_delete=models.CASCADE)
+    pokemon = models.ForeignKey(Pokemon, verbose_name='Покемон', related_name='pokemon', on_delete=models.CASCADE)
     lat = models.FloatField(verbose_name='Широта')
     lon = models.FloatField(verbose_name='Долгота')
     appeared_at = models.DateTimeField(verbose_name='Время появления')
@@ -30,4 +30,4 @@ class PokemonEntity(models.Model):
 
 
     def __str__(self):
-        return self.pokemon
+        return self.pokemon.title

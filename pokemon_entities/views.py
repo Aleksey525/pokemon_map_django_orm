@@ -31,7 +31,7 @@ def show_all_pokemons(request):
     entities = PokemonEntity.objects.filter(disappeared_at__gt=time_now, appeared_at__lt=time_now)
 
     for entity in entities:
-        entity_photo = request.build_absolute_uri(entity.pokemon.photo)
+        entity_photo = request.build_absolute_uri(entity.pokemon.photo.url)
         add_pokemon(
             folium_map,
             entity.lat,
@@ -42,7 +42,7 @@ def show_all_pokemons(request):
     pokemons_on_page = []
     pokemons = Pokemon.objects.all()
     for pokemon in pokemons:
-        pokemon_photo = request.build_absolute_uri(pokemon.photo)
+        pokemon_photo = request.build_absolute_uri(pokemon.photo.url)
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
             'img_url': pokemon_photo,
@@ -61,7 +61,7 @@ def show_pokemon(request, pokemon_id):
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
     for entity in entities:
-        entity_photo = request.build_absolute_uri(f'/media/{get_pokemon.photo}')
+        entity_photo = request.build_absolute_uri(get_pokemon.photo.url)
         add_pokemon(
             folium_map,
             entity.lat,
@@ -71,7 +71,7 @@ def show_pokemon(request, pokemon_id):
 
     pokemon = {
         'pokemon_id': get_pokemon.id,
-        'img_url': request.build_absolute_uri(f'/media/{get_pokemon.photo}'),
+        'img_url': request.build_absolute_uri(get_pokemon.photo.url),
         'title_ru': get_pokemon.title,
         'title_en': get_pokemon.title_en,
         'title_jp': get_pokemon.title_jp,
@@ -83,18 +83,18 @@ def show_pokemon(request, pokemon_id):
         previous_evolution = {
             "title_ru": get_pokemon.previous_evolution.title,
             "pokemon_id": get_pokemon.previous_evolution.id,
-            "img_url": request.build_absolute_uri(f'/media/{get_pokemon.previous_evolution.photo}'),
+            "img_url": request.build_absolute_uri(get_pokemon.previous_evolution.photo.url),
             "previous_evolution": get_pokemon.previous_evolution
         }
 
-    child = get_pokemon.evolution.all().first()
+    child = get_pokemon.next_evolution.first()
 
     next_evolution = {}
     if child:
         next_evolution = {
             'title_ru': child.title,
             "pokemon_id": child.id,
-            "img_url": request.build_absolute_uri(f'/media/{child.photo}'),
+            "img_url": request.build_absolute_uri(child.photo.url),
             "next_evolution": child
         }
 
