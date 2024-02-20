@@ -87,7 +87,7 @@ def show_pokemon(request, pokemon_id):
             "previous_evolution": get_pokemon.previous_evolution
         }
 
-    child = get_pokemon.next_evolution.first()
+    child = get_pokemon.next_evolutions.first()
 
     next_evolution = {}
     if child:
